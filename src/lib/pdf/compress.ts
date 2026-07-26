@@ -45,7 +45,7 @@ export async function compressPdf(file: File, quality: CompressQuality = 'medium
     const ctx = canvas.getContext('2d');
     if (!ctx) throw new Error('Canvas 2D context unavailable.');
 
-    await page.render({ canvasContext: ctx, viewport }).promise;
+    await page.render({ canvasContext: ctx, viewport, canvas }).promise;
 
     const jpegDataUrl = canvas.toDataURL('image/jpeg', jpegQuality);
     const jpegBytes = await fetch(jpegDataUrl).then((res) => res.arrayBuffer());
@@ -61,5 +61,6 @@ export async function compressPdf(file: File, quality: CompressQuality = 'medium
   }
 
   const outputBytes = await outputDoc.save();
-  return new Blob([outputBytes], { type: 'application/pdf' });
+  const normalizedOutputBytes = new Uint8Array(outputBytes);
+  return new Blob([normalizedOutputBytes], { type: 'application/pdf' });
 }
