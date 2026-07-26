@@ -75,5 +75,5 @@ export async function compressPdf(file: File, quality: CompressQuality = 'medium
   }
 
   const outputBytes = await outputDoc.save();
-  return new Blob([outputBytes], { type: 'application/pdf' });
+  return new Blob([new Uint8Array(outputBytes)], { type: 'application/pdf' });
 }
