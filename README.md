@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# TrimMyPDF — starter files
 
-## Getting Started
+Drop these into the project created earlier with `create-next-app` (same
+`src/` structure, so paths match directly).
 
-First, run the development server:
+## Extra dependency needed
+
+The merge logic only needs `pdf-lib` (already installed). The compress logic
+also needs `pdfjs-dist` to render pages before re-encoding them:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install pdfjs-dist
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Files in this folder
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+src/
+├── components/
+│   └── DropZone.tsx        # shared drag-and-drop zone, used by both tools
+├── lib/pdf/
+│   ├── merge.ts             # mergePdfs(files) -> Blob
+│   └── compress.ts          # compressPdf(file, quality) -> Blob
+└── app/
+    ├── merge-pdf/page.tsx
+    └── compress-pdf/page.tsx
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Known trade-off to know about
 
-## Learn More
+`compress.ts` works by rendering each page to a canvas and rebuilding the PDF
+from JPEG images (see the comment at the top of the file for why). That's a
+reliable way to shrink scanned/image-heavy PDFs client-side, but the output
+loses selectable/searchable text — every page becomes a flat image. Worth
+flagging on the compress page itself once you add copy, and a good candidate
+for a smarter (or server-side) approach later behind the Pro tier.
 
-To learn more about Next.js, take a look at the following resources:
+## Not included yet
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Root `layout.tsx` / homepage (`/`) — still template from `create-next-app`
+- FAQ / privacy / about pages
+- Any styling pass beyond functional Tailwind classes
