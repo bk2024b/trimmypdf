@@ -1,65 +1,116 @@
-import Image from "next/image";
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import ToolCard from '@/components/ToolCard';
 
-export default function Home() {
+export const metadata: Metadata = {
+  title: 'TrimMyPDF — Free PDF tools that never leave your browser',
+  description:
+    'Merge and compress PDF files instantly, for free. Everything runs in your browser — no uploads, no accounts, no waiting.',
+};
+
+const FAQS = [
+  {
+    question: 'Is it really free?',
+    answer: 'Yes. Merging and compressing PDFs is free, with no artificial limits on typical file sizes.',
+  },
+  {
+    question: 'Where do my files go?',
+    answer: 'Nowhere. Processing happens locally in your browser — your PDF is never uploaded to a server.',
+  },
+  {
+    question: 'Will compressing lose quality?',
+    answer:
+      'Some, depending on the setting you choose. Pick "Best quality" for light compression, or "Smallest file" to shrink as much as possible.',
+  },
+];
+
+export default function HomePage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <main className="relative overflow-hidden">
+      {/* Signature mark: a faint echo of the logo, ties the brand together without shouting */}
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 200 200"
+        className="pointer-events-none absolute -right-16 -top-16 h-80 w-80 text-emerald-600 opacity-[0.06] sm:h-[28rem] sm:w-[28rem]"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={4}
+      >
+        <path d="M50 10h70l40 40v130a10 10 0 0 1-10 10H50a10 10 0 0 1-10-10V20a10 10 0 0 1 10-10Z" />
+        <path d="M120 10v40h40" />
+      </svg>
+
+      <section className="mx-auto max-w-3xl px-4 pb-16 pt-20 text-center sm:pt-28">
+        <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+          Free PDF tools that never leave your browser.
+        </h1>
+        <p className="mx-auto mt-4 max-w-xl text-lg text-gray-600">
+          Merge and compress PDF files instantly — no uploads, no accounts, no waiting.
+        </p>
+      </section>
+
+      <section className="mx-auto grid max-w-3xl gap-4 px-4 sm:grid-cols-2">
+        <ToolCard
+          href="/merge-pdf"
+          title="Merge PDF"
+          description="Combine multiple PDFs into one, in the order you choose."
+          cta="Merge files"
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+        <ToolCard
+          href="/compress-pdf"
+          title="Compress PDF"
+          description="Shrink a large PDF down to size, without leaving your browser."
+          cta="Compress a file"
+        />
+      </section>
+
+      <section className="mx-auto mt-24 max-w-3xl px-4">
+        <div className="grid gap-8 border-t border-gray-200 pt-12 sm:grid-cols-3">
+          <div>
+            <h2 className="font-semibold text-gray-900">100% private</h2>
+            <p className="mt-1 text-sm text-gray-600">
+              Files are processed on your device. Nothing is ever uploaded to a server.
+            </p>
+          </div>
+          <div>
+            <h2 className="font-semibold text-gray-900">No sign-up</h2>
+            <p className="mt-1 text-sm text-gray-600">Drop your file and go. No account or email required.</p>
+          </div>
+          <div>
+            <h2 className="font-semibold text-gray-900">Free to use</h2>
+            <p className="mt-1 text-sm text-gray-600">Core tools are free, with no limits that get in your way.</p>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      <section className="mx-auto mt-24 max-w-3xl px-4 pb-24">
+        <h2 className="text-xl font-semibold text-gray-900">Frequently asked questions</h2>
+        <dl className="mt-6 space-y-6">
+          {FAQS.map((faq) => (
+            <div key={faq.question}>
+              <dt className="font-medium text-gray-900">{faq.question}</dt>
+              <dd className="mt-1 text-sm text-gray-600">{faq.answer}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+
+      <footer className="border-t border-gray-200 py-8">
+        <div className="mx-auto flex max-w-3xl flex-col items-center justify-between gap-4 px-4 text-sm text-gray-500 sm:flex-row">
+          <p>© {new Date().getFullYear()} TrimMyPDF</p>
+          <nav className="flex gap-4">
+            <Link href="/about" className="hover:text-gray-700">
+              About
+            </Link>
+            <Link href="/privacy" className="hover:text-gray-700">
+              Privacy
+            </Link>
+            <Link href="/contact" className="hover:text-gray-700">
+              Contact
+            </Link>
+          </nav>
         </div>
-      </main>
-    </div>
+      </footer>
+    </main>
   );
 }
