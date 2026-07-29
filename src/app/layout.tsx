@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Manrope } from 'next/font/google';
 import Script from 'next/script';
 import './globals.css';
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
+const manrope = Manrope({ subsets: ['latin'], variable: '--font-manrope' });
 
 export const metadata: Metadata = {
   title: {
@@ -20,17 +20,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en" className={manrope.variable}>
       <head>
         {/*
-          Google Privacy & Messaging (formerly Funding Choices)
+          Google Privacy & Messaging (formerly Funding Choices) — shows the
+          consent banner to EU/UK/CA visitors before ads personalize.
+          The pub ID below is correct, but this exact script (in particular
+          the `?ers=1` query string) should be swapped for whatever Google
+          generates once you create a message under
+          AdSense > Privacy & messaging. Don't skip that dashboard step —
+          without a configured message, this script has nothing to show.
         */}
         <Script
           id="google-funding-choices"
           src={`https://fundingchoicesmessages.google.com/i/${process.env.NEXT_PUBLIC_ADSENSE_PUB_ID}?ers=1`}
           strategy="beforeInteractive"
         />
-
         <Script id="google-funding-choices-present" strategy="beforeInteractive">
           {`(function() {
             function signalGooglefcPresent() {
@@ -51,7 +56,12 @@ export default function RootLayout({
         </Script>
 
         {/*
-          Google AdSense
+          strategy is "beforeInteractive" (not "afterInteractive") on purpose:
+          afterInteractive scripts are injected client-side after hydration,
+          so they never appear in the raw server-rendered HTML — and AdSense's
+          site-verification crawler checks the raw HTML, so it fails to find
+          the tag. beforeInteractive is guaranteed to render into the actual
+          <head> markup sent by the server.
         */}
         <Script
           async
@@ -61,25 +71,9 @@ export default function RootLayout({
         />
 
         {/*
-          Google Analytics (GA4)
-        */}
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-DRV08B6SV8"
-          strategy="afterInteractive"
-        />
-
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-
-            gtag('config', 'G-DRV08B6SV8');
-          `}
-        </Script>
-
-        {/*
-          Microsoft Clarity
+          Microsoft Clarity — pure analytics, no verification crawler involved,
+          so afterInteractive (Next.js's own recommendation for analytics
+          scripts) is the right call here, unlike the AdSense script above.
         */}
         <Script id="microsoft-clarity" strategy="afterInteractive">
           {`(function(c,l,a,r,i,t,y){
@@ -89,10 +83,7 @@ export default function RootLayout({
           })(window, document, "clarity", "script", "${process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID}");`}
         </Script>
       </head>
-
-      <body className="font-sans antialiased">
-        {children}
-      </body>
+      <body className="antialiased [font-family:var(--font-manrope),sans-serif]">{children}</body>
     </html>
   );
 }

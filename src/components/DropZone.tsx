@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useId, useState } from 'react';
+import { FileUp } from 'lucide-react';
 
 interface DropZoneProps {
   /** Allow selecting/dropping more than one file (merge needs this, compress doesn't) */
@@ -41,10 +42,10 @@ export default function DropZone({ multiple = false, onFilesSelected, label }: D
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') document.getElementById(inputId)?.click();
       }}
-      className={`flex flex-col items-center justify-center rounded-2xl border-2 border-dashed p-12 text-center cursor-pointer transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 ${
+      className={`group flex flex-col items-center justify-center rounded-3xl border p-12 text-center cursor-pointer transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 ${
         isDragging
-          ? 'border-emerald-500 bg-emerald-50'
-          : 'border-gray-300 bg-gray-50 hover:border-gray-400 hover:bg-gray-100'
+          ? 'border-emerald-500 bg-emerald-50 shadow-lg -translate-y-0.5'
+          : 'border-gray-200 bg-gray-50 shadow-sm hover:border-emerald-300 hover:bg-emerald-50/40 hover:shadow-md hover:-translate-y-0.5'
       }`}
     >
       <input
@@ -55,16 +56,13 @@ export default function DropZone({ multiple = false, onFilesSelected, label }: D
         className="hidden"
         onChange={(e) => handleFiles(e.target.files)}
       />
-      <svg
-        className="mb-3 h-8 w-8 text-gray-400"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        strokeWidth={1.5}
+      <FileUp
+        strokeWidth={2.5}
+        className={`mb-3 h-9 w-9 transition-colors ${
+          isDragging ? 'text-emerald-600' : 'text-gray-400 group-hover:text-emerald-500'
+        }`}
         aria-hidden="true"
-      >
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 16.5V4m0 12.5-4-4m4 4 4-4M4 20h16" />
-      </svg>
+      />
       <p className="text-base font-medium text-gray-700">
         {label ?? (multiple ? 'Drop your PDF files here' : 'Drop your PDF file here')}
       </p>

@@ -1,13 +1,22 @@
 'use client';
 
 import { useState } from 'react';
+import { ShieldCheck, Zap, Sparkles } from 'lucide-react';
 import DropZone from '@/components/DropZone';
+import Reveal from '@/components/Reveal';
+import CompressIllustration from '@/components/CompressIllustration';
 import { compressPdf, type CompressQuality } from '@/lib/pdf/compress';
 
 const QUALITY_OPTIONS: { value: CompressQuality; label: string }[] = [
   { value: 'low', label: 'Smallest file' },
   { value: 'medium', label: 'Balanced' },
   { value: 'high', label: 'Best quality' },
+];
+
+const TRUST_ITEMS = [
+  { icon: ShieldCheck, label: 'Secure' },
+  { icon: Zap, label: 'Fast' },
+  { icon: Sparkles, label: 'Free' },
 ];
 
 export default function CompressPdfPage() {
@@ -38,31 +47,57 @@ export default function CompressPdfPage() {
   };
 
   return (
-    <main className="mx-auto max-w-2xl px-4 py-16">
-      <h1 className="text-3xl font-bold tracking-tight text-gray-900">Compress PDF</h1>
-      <p className="mt-2 text-gray-600">
-        Shrink your PDF file size, right in your browser. Best for scanned or image-heavy PDFs.
-      </p>
+    <main className="mx-auto max-w-2xl px-4 pb-24">
+      {/* Hero */}
+      <Reveal className="pt-20 text-center sm:pt-28">
+        <h1 className="tracking-tight text-gray-900">
+          <span className="block text-6xl font-extrabold leading-[1.05] sm:text-7xl md:text-8xl">
+            Compress PDF
+          </span>
+          <span className="mt-3 block text-2xl font-light text-gray-500 sm:text-3xl">
+            without losing quality
+          </span>
+        </h1>
+        <p className="mx-auto mt-6 max-w-md text-lg text-gray-600">
+          Reduce your PDF size by up to 90% — right in your browser.
+        </p>
+        <div className="mt-5 flex items-center justify-center gap-4 text-sm font-medium text-gray-500">
+          {TRUST_ITEMS.map(({ icon: Icon, label }, i) => (
+            <span key={label} className="flex items-center gap-3">
+              {i > 0 && <span className="text-gray-300">•</span>}
+              <span className="flex items-center gap-1.5">
+                <Icon strokeWidth={2.5} className="h-4 w-4 text-emerald-600" />
+                {label}
+              </span>
+            </span>
+          ))}
+        </div>
+      </Reveal>
 
-      <div className="mt-8">
+      <Reveal delay={100} className="mt-10">
+        <CompressIllustration />
+      </Reveal>
+
+      {/* Tool */}
+      <Reveal delay={150} className="mt-16">
         <DropZone onFilesSelected={handleFile} label="Drop your PDF file here" />
-      </div>
+      </Reveal>
 
       {file && (
-        <div className="mt-4 rounded-lg border border-gray-200 px-4 py-3 text-sm text-gray-800">
+        <div className="mt-4 rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-800 shadow-sm">
           {file.name} · {(file.size / 1024 / 1024).toFixed(2)} MB
         </div>
       )}
 
-      <div className="mt-6 flex gap-2">
+      <div className="mt-6 flex gap-3">
         {QUALITY_OPTIONS.map((opt) => (
           <button
             key={opt.value}
             onClick={() => setQuality(opt.value)}
-            className={`flex-1 rounded-lg border px-3 py-2 text-sm font-medium transition-colors ${
+            className={`flex-1 rounded-2xl border px-3 py-3 text-sm font-medium shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md ${
               quality === opt.value
                 ? 'border-emerald-600 bg-emerald-50 text-emerald-700'
-                : 'border-gray-200 text-gray-600 hover:border-gray-300'
+                : 'border-gray-200 bg-white text-gray-600 hover:border-emerald-300'
             }`}
           >
             {opt.label}
@@ -75,27 +110,30 @@ export default function CompressPdfPage() {
       <button
         onClick={handleCompress}
         disabled={!file || isProcessing}
-        className="mt-6 w-full rounded-lg bg-emerald-600 px-6 py-3 font-medium text-white transition-colors hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-40"
+        className="mt-8 w-full rounded-2xl bg-emerald-600 px-6 py-4 text-base font-semibold text-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:translate-y-0 disabled:hover:shadow-sm"
       >
         {isProcessing ? 'Compressing…' : 'Compress PDF'}
       </button>
 
       {result && file && (
-        <div className="mt-4 space-y-2">
+        <Reveal className="mt-6 space-y-3">
           <p className="text-sm text-gray-600">
             New size: {(result.size / 1024 / 1024).toFixed(2)} MB
             {result.size < file.size && (
-              <span className="text-emerald-700"> · {Math.round((1 - result.size / file.size) * 100)}% smaller</span>
+              <span className="font-medium text-emerald-700">
+                {' '}
+                · {Math.round((1 - result.size / file.size) * 100)}% smaller
+              </span>
             )}
           </p>
           <a
             href={result.url}
             download="compressed.pdf"
-            className="flex items-center justify-center rounded-lg border border-emerald-600 px-6 py-3 font-medium text-emerald-700 hover:bg-emerald-50"
+            className="flex items-center justify-center rounded-2xl border border-emerald-600 px-6 py-4 text-base font-semibold text-emerald-700 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-emerald-50 hover:shadow-md"
           >
             Download compressed.pdf
           </a>
-        </div>
+        </Reveal>
       )}
     </main>
   );
