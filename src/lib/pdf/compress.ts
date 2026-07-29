@@ -39,7 +39,7 @@ export async function compressPdf(file: File, quality: CompressQuality = 'medium
   const pdfjsLib = await import('pdfjs-dist');
 
   if (!workerConfigured) {
-    pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+    pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
     workerConfigured = true;
   }
 
