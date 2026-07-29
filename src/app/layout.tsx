@@ -55,13 +55,33 @@ export default function RootLayout({
           })();`}
         </Script>
 
-        {/* Google AdSense — loads on every page since this is the root layout */}
+        {/*
+          strategy is "beforeInteractive" (not "afterInteractive") on purpose:
+          afterInteractive scripts are injected client-side after hydration,
+          so they never appear in the raw server-rendered HTML — and AdSense's
+          site-verification crawler checks the raw HTML, so it fails to find
+          the tag. beforeInteractive is guaranteed to render into the actual
+          <head> markup sent by the server.
+        */}
         <Script
           async
           src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}`}
           crossOrigin="anonymous"
           strategy="beforeInteractive"
         />
+
+        {/*
+          Microsoft Clarity — pure analytics, no verification crawler involved,
+          so afterInteractive (Next.js's own recommendation for analytics
+          scripts) is the right call here, unlike the AdSense script above.
+        */}
+        <Script id="microsoft-clarity" strategy="afterInteractive">
+          {`(function(c,l,a,r,i,t,y){
+              c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+              t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+              y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+          })(window, document, "clarity", "script", "${process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID}");`}
+        </Script>
       </head>
       <body className="font-sans antialiased">{children}</body>
     </html>
