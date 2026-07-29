@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { Combine, Shrink, ShieldCheck, LogIn, Sparkles } from 'lucide-react';
 import ToolCard from '@/components/ToolCard';
+import Reveal from '@/components/Reveal';
 
 export const metadata: Metadata = {
   title: 'TrimMyPDF — Free PDF tools that never leave your browser',
@@ -24,6 +26,24 @@ const FAQS = [
   },
 ];
 
+const TRUST_ITEMS = [
+  {
+    icon: ShieldCheck,
+    title: '100% private',
+    description: 'Files are processed on your device. Nothing is ever uploaded to a server.',
+  },
+  {
+    icon: LogIn,
+    title: 'No sign-up',
+    description: 'Drop your file and go. No account or email required.',
+  },
+  {
+    icon: Sparkles,
+    title: 'Free to use',
+    description: 'Core tools are free, with no limits that get in your way.',
+  },
+];
+
 export default function HomePage() {
   return (
     <main className="relative overflow-hidden">
@@ -40,50 +60,52 @@ export default function HomePage() {
         <path d="M120 10v40h40" />
       </svg>
 
-      <section className="mx-auto max-w-3xl px-4 pb-16 pt-20 text-center sm:pt-28">
-        <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
-          Free PDF tools that never leave your browser.
+      <Reveal className="mx-auto max-w-3xl px-4 pb-16 pt-20 text-center sm:pt-28">
+        <h1 className="tracking-tight text-gray-900">
+          <span className="block text-6xl font-extrabold leading-[1.05] sm:text-7xl md:text-8xl">
+            Free PDF tools
+          </span>
+          <span className="mt-3 block text-2xl font-light text-gray-500 sm:text-3xl">
+            that never leave your browser
+          </span>
         </h1>
-        <p className="mx-auto mt-4 max-w-xl text-lg text-gray-600">
+        <p className="mx-auto mt-6 max-w-xl text-lg text-gray-600">
           Merge and compress PDF files instantly — no uploads, no accounts, no waiting.
         </p>
-      </section>
+      </Reveal>
 
-      <section className="mx-auto grid max-w-3xl gap-4 px-4 sm:grid-cols-2">
+      <Reveal delay={100} className="mx-auto grid max-w-3xl gap-4 px-4 sm:grid-cols-2">
         <ToolCard
           href="/merge-pdf"
           title="Merge PDF"
           description="Combine multiple PDFs into one, in the order you choose."
           cta="Merge files"
+          icon={Combine}
         />
         <ToolCard
           href="/compress-pdf"
           title="Compress PDF"
           description="Shrink a large PDF down to size, without leaving your browser."
           cta="Compress a file"
+          icon={Shrink}
         />
-      </section>
+      </Reveal>
 
-      <section className="mx-auto mt-24 max-w-3xl px-4">
-        <div className="grid gap-8 border-t border-gray-200 pt-12 sm:grid-cols-3">
-          <div>
-            <h2 className="font-semibold text-gray-900">100% private</h2>
-            <p className="mt-1 text-sm text-gray-600">
-              Files are processed on your device. Nothing is ever uploaded to a server.
-            </p>
-          </div>
-          <div>
-            <h2 className="font-semibold text-gray-900">No sign-up</h2>
-            <p className="mt-1 text-sm text-gray-600">Drop your file and go. No account or email required.</p>
-          </div>
-          <div>
-            <h2 className="font-semibold text-gray-900">Free to use</h2>
-            <p className="mt-1 text-sm text-gray-600">Core tools are free, with no limits that get in your way.</p>
-          </div>
+      <section className="mx-auto mt-32 max-w-3xl px-4">
+        <div className="grid gap-4 border-t border-gray-200 pt-16 sm:grid-cols-3">
+          {TRUST_ITEMS.map(({ icon: Icon, title, description }, i) => (
+            <Reveal key={title} delay={i * 100}>
+              <div className="h-full rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
+                <Icon strokeWidth={2.5} className="h-5 w-5 text-emerald-600" />
+                <h2 className="mt-3 font-semibold text-gray-900">{title}</h2>
+                <p className="mt-1 text-sm text-gray-600">{description}</p>
+              </div>
+            </Reveal>
+          ))}
         </div>
       </section>
 
-      <section className="mx-auto mt-24 max-w-3xl px-4 pb-24">
+      <Reveal className="mx-auto mt-32 max-w-3xl px-4 pb-24">
         <h2 className="text-xl font-semibold text-gray-900">Frequently asked questions</h2>
         <dl className="mt-6 space-y-6">
           {FAQS.map((faq) => (
@@ -93,9 +115,9 @@ export default function HomePage() {
             </div>
           ))}
         </dl>
-      </section>
+      </Reveal>
 
-      <footer className="border-t border-gray-200 py-8">
+      <footer className="border-t border-gray-200 py-10">
         <div className="mx-auto flex max-w-3xl flex-col items-center justify-between gap-4 px-4 text-sm text-gray-500 sm:flex-row">
           <p>© {new Date().getFullYear()} TrimMyPDF</p>
           <nav className="flex gap-4">
