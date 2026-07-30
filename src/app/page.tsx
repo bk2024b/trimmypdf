@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Combine, Shrink, ShieldCheck, LogIn, Sparkles } from 'lucide-react';
 import ToolCard from '@/components/ToolCard';
 import Reveal from '@/components/Reveal';
+import TrustBadges from '@/components/TrustBadges';
 
 export const metadata: Metadata = {
   title: 'TrimMyPDF — Free PDF tools that never leave your browser',
@@ -61,7 +62,8 @@ export default function HomePage() {
       </svg>
 
       <Reveal className="mx-auto max-w-3xl px-4 pb-16 pt-20 text-center sm:pt-28">
-        <h1 className="tracking-tight text-gray-900">
+        <TrustBadges />
+        <h1 className="mt-6 tracking-tight text-gray-900">
           <span className="block text-6xl font-extrabold leading-[1.05] sm:text-7xl md:text-8xl">
             Free PDF tools
           </span>

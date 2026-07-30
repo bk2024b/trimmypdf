@@ -1,17 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { ShieldCheck, Zap, Sparkles, X } from 'lucide-react';
+import { X } from 'lucide-react';
 import DropZone from '@/components/DropZone';
 import Reveal from '@/components/Reveal';
 import MergeIllustration from '@/components/MergeIllustration';
+import TrustBadges from '@/components/TrustBadges';
 import { mergePdfs } from '@/lib/pdf/merge';
-
-const TRUST_ITEMS = [
-  { icon: ShieldCheck, label: 'Secure' },
-  { icon: Zap, label: 'Fast' },
-  { icon: Sparkles, label: 'Free' },
-];
 
 export default function MergePdfPage() {
   const [files, setFiles] = useState<File[]>([]);
@@ -44,9 +39,10 @@ export default function MergePdfPage() {
 
   return (
     <main className="mx-auto max-w-2xl px-4 pb-24">
-      {/* Hero */}
-      <Reveal className="pt-20 text-center sm:pt-28">
-        <h1 className="tracking-tight text-gray-900">
+      {/* Hero — trust badges sit above the fold, before the headline */}
+      <Reveal className="pt-16 text-center sm:pt-20">
+        <TrustBadges />
+        <h1 className="mt-6 tracking-tight text-gray-900">
           <span className="block text-6xl font-extrabold leading-[1.05] sm:text-7xl md:text-8xl">
             Merge PDF
           </span>
@@ -57,17 +53,6 @@ export default function MergePdfPage() {
         <p className="mx-auto mt-6 max-w-md text-lg text-gray-600">
           Combine multiple PDFs into one — right in your browser.
         </p>
-        <div className="mt-5 flex items-center justify-center gap-4 text-sm font-medium text-gray-500">
-          {TRUST_ITEMS.map(({ icon: Icon, label }, i) => (
-            <span key={label} className="flex items-center gap-3">
-              {i > 0 && <span className="text-gray-300">•</span>}
-              <span className="flex items-center gap-1.5">
-                <Icon strokeWidth={2.5} className="h-4 w-4 text-emerald-600" />
-                {label}
-              </span>
-            </span>
-          ))}
-        </div>
       </Reveal>
 
       <Reveal delay={100} className="mt-10">

@@ -1,22 +1,16 @@
 'use client';
 
 import { useState } from 'react';
-import { ShieldCheck, Zap, Sparkles } from 'lucide-react';
 import DropZone from '@/components/DropZone';
 import Reveal from '@/components/Reveal';
 import CompressIllustration from '@/components/CompressIllustration';
+import TrustBadges from '@/components/TrustBadges';
 import { compressPdf, type CompressQuality } from '@/lib/pdf/compress';
 
 const QUALITY_OPTIONS: { value: CompressQuality; label: string }[] = [
   { value: 'low', label: 'Smallest file' },
   { value: 'medium', label: 'Balanced' },
   { value: 'high', label: 'Best quality' },
-];
-
-const TRUST_ITEMS = [
-  { icon: ShieldCheck, label: 'Secure' },
-  { icon: Zap, label: 'Fast' },
-  { icon: Sparkles, label: 'Free' },
 ];
 
 export default function CompressPdfPage() {
@@ -48,9 +42,10 @@ export default function CompressPdfPage() {
 
   return (
     <main className="mx-auto max-w-2xl px-4 pb-24">
-      {/* Hero */}
-      <Reveal className="pt-20 text-center sm:pt-28">
-        <h1 className="tracking-tight text-gray-900">
+      {/* Hero — trust badges sit above the fold, before the headline */}
+      <Reveal className="pt-16 text-center sm:pt-20">
+        <TrustBadges />
+        <h1 className="mt-6 tracking-tight text-gray-900">
           <span className="block text-6xl font-extrabold leading-[1.05] sm:text-7xl md:text-8xl">
             Compress PDF
           </span>
@@ -61,17 +56,6 @@ export default function CompressPdfPage() {
         <p className="mx-auto mt-6 max-w-md text-lg text-gray-600">
           Reduce your PDF size by up to 90% — right in your browser.
         </p>
-        <div className="mt-5 flex items-center justify-center gap-4 text-sm font-medium text-gray-500">
-          {TRUST_ITEMS.map(({ icon: Icon, label }, i) => (
-            <span key={label} className="flex items-center gap-3">
-              {i > 0 && <span className="text-gray-300">•</span>}
-              <span className="flex items-center gap-1.5">
-                <Icon strokeWidth={2.5} className="h-4 w-4 text-emerald-600" />
-                {label}
-              </span>
-            </span>
-          ))}
-        </div>
       </Reveal>
 
       <Reveal delay={100} className="mt-10">
