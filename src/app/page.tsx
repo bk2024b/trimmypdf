@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Combine, Shrink, ShieldCheck, LogIn, Sparkles } from 'lucide-react';
+import { Combine, Shrink, ShieldCheck, LogIn, Sparkles, Upload, Wand2, Download } from 'lucide-react';
 import ToolCard from '@/components/ToolCard';
 import Reveal from '@/components/Reveal';
 import TrustBadges from '@/components/TrustBadges';
@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   title: 'TrimMyPDF — Free PDF tools that never leave your browser',
   description:
     'Merge and compress PDF files instantly, for free. Everything runs in your browser — no uploads, no accounts, no waiting.',
+  alternates: { canonical: '/' },
 };
 
 const FAQS = [
@@ -24,6 +25,42 @@ const FAQS = [
     question: 'Will compressing lose quality?',
     answer:
       'Some, depending on the setting you choose. Pick "Best quality" for light compression, or "Smallest file" to shrink as much as possible.',
+  },
+  {
+    question: 'Do I need to install anything?',
+    answer:
+      'No. TrimMyPDF runs entirely in your web browser — no downloads, no browser extensions, and no desktop software to keep updated.',
+  },
+  {
+    question: 'Is there a file size limit?',
+    answer:
+      "There's no artificial cap we impose. In practice, the limit is your device's own memory rather than a rule we've set — most PDFs, including large scanned documents, process without issue.",
+  },
+  {
+    question: 'Can I use TrimMyPDF on my phone?',
+    answer:
+      'Yes. Both tools work in any modern mobile browser, so you can merge or compress PDFs from your phone or tablet without installing an app.',
+  },
+];
+
+const HOW_IT_WORKS = [
+  {
+    icon: Upload,
+    title: 'Drop your file',
+    description:
+      'Drag and drop a PDF onto the tool, or click to browse and select one from your device. Nothing uploads yet — the file just loads into your browser.',
+  },
+  {
+    icon: Wand2,
+    title: 'Choose your tool',
+    description:
+      'Pick Merge to combine several PDFs into one in the order you want, or Compress to shrink a large file down to a manageable size.',
+  },
+  {
+    icon: Download,
+    title: 'Download instantly',
+    description:
+      'Your new PDF is ready in seconds. Since everything runs locally on your device, there is no upload queue and no wait.',
   },
 ];
 
@@ -94,6 +131,21 @@ export default function HomePage() {
       </Reveal>
 
       <section className="mx-auto mt-32 max-w-3xl px-4">
+        <h2 className="text-center text-xl font-semibold text-gray-900">How it works</h2>
+        <div className="mt-10 grid gap-8 sm:grid-cols-3">
+          {HOW_IT_WORKS.map(({ icon: Icon, title, description }, i) => (
+            <Reveal key={title} delay={i * 100}>
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+                <Icon strokeWidth={2.5} className="h-4 w-4" />
+              </div>
+              <h3 className="mt-4 font-semibold text-gray-900">{title}</h3>
+              <p className="mt-1 text-sm text-gray-600">{description}</p>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      <section className="mx-auto mt-32 max-w-3xl px-4">
         <div className="grid gap-4 border-t border-gray-200 pt-16 sm:grid-cols-3">
           {TRUST_ITEMS.map(({ icon: Icon, title, description }, i) => (
             <Reveal key={title} delay={i * 100}>
@@ -109,14 +161,14 @@ export default function HomePage() {
 
       <Reveal className="mx-auto mt-32 max-w-3xl px-4 pb-24">
         <h2 className="text-xl font-semibold text-gray-900">Frequently asked questions</h2>
-        <dl className="mt-6 space-y-6">
+        <div className="mt-6 space-y-6">
           {FAQS.map((faq) => (
             <div key={faq.question}>
-              <dt className="font-medium text-gray-900">{faq.question}</dt>
-              <dd className="mt-1 text-sm text-gray-600">{faq.answer}</dd>
+              <h3 className="font-medium text-gray-900">{faq.question}</h3>
+              <p className="mt-1 text-sm text-gray-600">{faq.answer}</p>
             </div>
           ))}
-        </dl>
+        </div>
       </Reveal>
 
       <footer className="border-t border-gray-200 py-10">

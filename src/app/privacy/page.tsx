@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Privacy Policy — TrimMyPDF',
   description: 'How TrimMyPDF handles your files and data.',
+  alternates: { canonical: '/privacy' },
 };
 
 export default function PrivacyPage() {

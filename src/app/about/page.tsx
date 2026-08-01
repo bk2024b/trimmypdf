@@ -4,6 +4,7 @@ import Link from 'next/link';
 export const metadata: Metadata = {
   title: 'About — TrimMyPDF',
   description: 'Why TrimMyPDF exists and how it works.',
+  alternates: { canonical: '/about' },
 };
 
 export default function AboutPage() {

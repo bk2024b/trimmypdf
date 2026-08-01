@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Contact — TrimMyPDF',
   description: 'Get in touch with the TrimMyPDF team.',
+  alternates: { canonical: '/contact' },
 };
 
 export default function ContactPage() {
